@@ -146,6 +146,89 @@ define([
         ]
     };
 
+    // * unicode char
+    // * substitution to use existing glyph's pattern (if no pattern)
+    // * pattern (if no substitution)
+    // * auto lowercase variant
+    // * glyph name
+    var extraGlyphs = [
+            [ "А", "A", null, true, "code.cyr.A"]
+          , [ "Б", "B", null, true, "code.cyr.Be"]
+          , [ "В", "W", null, true, "code.cyr.Ve"]
+          , [ "Г", "G", null, true, "code.cyr.Ghe"]
+          , [ "Д", "D", null, true, "code.cyr.De"]
+          , [ "Е", "E", null, true, "code.cyr.Ie"]
+          , [ "Ё", "E", null, true, "code.cyr.Io"]
+          , [ "Ж", "V", null, true, "code.cyr.Zhe"]
+          , [ "З", "Z", null, true, "code.cyr.Ze"]
+          , [ "И", "I", null, true, "code.cyr.I"]
+          , [ "Й", "J", null, true, "code.cyr.ShortI"]
+          , [ "К", "K", null, true, "code.cyr.Ka"]
+          , [ "Л", "L", null, true, "code.cyr.El"]
+          , [ "М", "M", null, true, "code.cyr.Em"]
+          , [ "Н", "N", null, true, "code.cyr.En"]
+          , [ "О", "O", null, true, "code.cyr.O"]
+          , [ "П", "P", null, true, "code.cyr.Pe"]
+          , [ "Р", "R", null, true, "code.cyr.Er"]
+          , [ "С", "S", null, true, "code.cyr.Es"]
+          , [ "Т", "T", null, true, "code.cyr.Te"]
+          , [ "У", "U", null, true, "code.cyr.U"]
+          , [ "Ф", "F", null, true, "code.cyr.Ef"]
+          , [ "Х", "H", null, true, "code.cyr.Ha"]
+          , [ "Ц", "C", null, true, "code.cyr.Tse"]
+          , [ "Ч", "~", null, false, "code.cyr.Che"]
+          , [ "ч", "^", null, false, "code.cyr.che"]
+          , [ "Ш", "{", null, false, "code.cyr.Sha"]
+          , [ "ш", "[", null, false, "code.cyr.sha"]
+          , [ "Щ", "}", null, false, "code.cyr.Shcha"]
+          , [ "щ", "]", null, false, "code.cyr.shcha"]
+          , [ "Ъ", "Ã", null, false, "code.cyr.HardSign"]
+          , [ "ъ", "_", null, false, "code.cyr.hardsign"]
+          , [ "Ы", "Y", null, true, "code.cyr.Yeru"]
+          , [ "Ь", "X", null, true, "code.cyr.SoftSign"]
+          , [ "Э", "|", null, false, "code.cyr.E"]
+          , [ "э", "\\", null, false, "code.cyr.e"]
+          , [ "Ю", "`", null, false, "code.cyr.Yu"]
+          , [ "ю", "@", null, false, "code.cyr.yu"]
+          , [ "Я", "Q", null, true, "code.cyr.Ya"]
+    ];
+
+    var extraChecksumValue = 106;
+
+    for (let i = 0; i < extraGlyphs.length; i++) {
+      var extraGlyph = extraGlyphs[i];
+
+      var pattern = '';
+
+      if (extraGlyph[1]) {
+        pattern = data.glyphs.find((glyph) =>
+          glyph[3].includes(extraGlyph[1])
+        )[1];
+      } else if (extraGlyph[2]) {
+        pattern = extraGlyph[2];
+      }
+
+      var glyph = [extraChecksumValue, pattern, extraGlyph[4], [extraGlyph[0]], true];
+
+      data.glyphs.push(glyph);
+      extraChecksumValue++;
+      
+      if (extraGlyph[3]) {
+        pattern = data.glyphs.find((glyph) =>
+          glyph[3].includes(extraGlyph[1].toLowerCase())
+        )[1];
+        var lowercaseGlyph = [extraChecksumValue, pattern, extraGlyph[4].toLowerCase(), [extraGlyph[0].toLowerCase()], true];
+
+        data.glyphs.push(lowercaseGlyph);
+        extraChecksumValue++;
+      }
+    }
+
+    data.glyphs.push([ extraChecksumValue, "11111111111", "code.fullwidth", ["№"], false]);
+    extraChecksumValue++;
+    data.glyphs.push([ extraChecksumValue, "00000000000", "code.fullwidthempty", ["¡"], false]);
+    extraChecksumValue++;
+
     (()=>{
       for(let i=0;i<=99;i++) {
 

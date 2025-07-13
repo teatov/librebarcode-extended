@@ -54,7 +54,7 @@ function configure {
     echo "configure $TARGET ..."
 
     # globals i.e. the result of the function
-    TEXT_BELOW_FONT="./app/assets/Inconsolata-Regular.ttf"
+    TEXT_BELOW_FONT="./app/assets/Inconsolata-LGC.ttf"
     PARAMETERS='{}'
 
     # locals, these don't leak out
