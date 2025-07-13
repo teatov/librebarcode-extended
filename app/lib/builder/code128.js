@@ -224,6 +224,7 @@ define([
       }
     }
 
+    // special glyphs for testing purposes
     data.glyphs.push([ extraChecksumValue, "11111111111", "code.fullwidth", ["№"], false]);
     extraChecksumValue++;
     data.glyphs.push([ extraChecksumValue, "00000000000", "code.fullwidthempty", ["¡"], false]);
